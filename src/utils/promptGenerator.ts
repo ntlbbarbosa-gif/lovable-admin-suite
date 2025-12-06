@@ -8,6 +8,7 @@ export interface SiteData {
   colors: string;
   objective: string;
   notes: string;
+  price: number;
 }
 
 export function generateSitePrompt(site: SiteData): string {
