@@ -10,7 +10,7 @@ import {
 import { Skeleton } from '@/components/ui/skeleton';
 
 export default function Sites() {
-  const { sites, loading, toggleSiteStatus, addSite, editSite, deleteSite } = useSites();
+  const { sites, loading, toggleSiteStatus, addSite, editSite, deleteSite, markAsPaid } = useSites();
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
 
@@ -77,6 +77,7 @@ export default function Sites() {
         onToggleStatus={toggleSiteStatus} 
         onEditSite={editSite}
         onDeleteSite={deleteSite}
+        onMarkAsPaid={markAsPaid}
       />
     </div>
   );

@@ -63,6 +63,23 @@ export function useSites() {
     setSites(prevSites => prevSites.filter(site => site.id !== id));
   };
 
+  const markAsPaid = (id: string) => {
+    setSites(prevSites =>
+      prevSites.map(site => {
+        if (site.id === id) {
+          const newPaymentDate = new Date();
+          newPaymentDate.setDate(newPaymentDate.getDate() + 30);
+          return { 
+            ...site, 
+            active: true, 
+            nextPayment: newPaymentDate.toISOString().split('T')[0] 
+          };
+        }
+        return site;
+      })
+    );
+  };
+
   const getStats = () => {
     const activeSites = sites.filter(s => s.active).length;
     const inactiveSites = sites.filter(s => !s.active).length;
@@ -78,5 +95,5 @@ export function useSites() {
     return { activeSites, inactiveSites, overduePayments, upcomingPayments, estimatedRevenue };
   };
 
-  return { sites, loading, toggleSiteStatus, addSite, editSite, deleteSite, getStats };
+  return { sites, loading, toggleSiteStatus, addSite, editSite, deleteSite, markAsPaid, getStats };
 }

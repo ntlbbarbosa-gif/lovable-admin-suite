@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ExternalLink, Sparkles, MoreHorizontal, Power, PowerOff, Pencil, Trash2 } from 'lucide-react';
+import { ExternalLink, Sparkles, MoreHorizontal, Power, PowerOff, Pencil, Trash2, CreditCard } from 'lucide-react';
 import { SiteData, generateSitePrompt, copyToClipboard } from '@/utils/promptGenerator';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -28,9 +28,10 @@ interface SitesTableProps {
   onToggleStatus: (id: string) => void;
   onEditSite?: (id: string, data: Partial<SiteData>) => void;
   onDeleteSite?: (id: string) => void;
+  onMarkAsPaid?: (id: string) => void;
 }
 
-export function SitesTable({ sites, onToggleStatus, onEditSite, onDeleteSite }: SitesTableProps) {
+export function SitesTable({ sites, onToggleStatus, onEditSite, onDeleteSite, onMarkAsPaid }: SitesTableProps) {
   const [promptDialogOpen, setPromptDialogOpen] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -85,6 +86,30 @@ export function SitesTable({ sites, onToggleStatus, onEditSite, onDeleteSite }: 
 
   const isPaymentOverdue = (dateString: string) => new Date(dateString) < new Date();
 
+  const getPaymentStatus = (site: SiteData) => {
+    const overdue = isPaymentOverdue(site.nextPayment);
+    if (overdue && !site.active) {
+      return { label: 'Atrasado + Desativado', variant: 'destructive' as const, className: 'bg-destructive/10 text-destructive border-destructive/20' };
+    }
+    if (overdue) {
+      return { label: 'Atrasado', variant: 'destructive' as const, className: 'bg-amber-500/10 text-amber-600 border-amber-500/20' };
+    }
+    if (site.active) {
+      return { label: 'Ativo', variant: 'default' as const, className: 'bg-success/10 text-success border-success/20' };
+    }
+    return { label: 'Desativado', variant: 'destructive' as const, className: 'bg-destructive/10 text-destructive border-destructive/20' };
+  };
+
+  const handleMarkAsPaid = (site: SiteData) => {
+    if (onMarkAsPaid) {
+      onMarkAsPaid(site.id);
+      toast({ 
+        title: "Pagamento registrado!", 
+        description: `${site.company} agora tem +30 dias de uso.`,
+      });
+    }
+  };
+
   return (
     <>
       <div className="rounded-xl border border-border bg-card overflow-hidden">
@@ -114,14 +139,18 @@ export function SitesTable({ sites, onToggleStatus, onEditSite, onDeleteSite }: 
                   </a>
                 </TableCell>
                 <TableCell>
-                  <Badge variant="outline" className={cn("font-medium", site.active ? "bg-success/10 text-success border-success/20" : "bg-destructive/10 text-destructive border-destructive/20")}>
-                    {site.active ? 'Ativo' : 'Desativado'}
-                  </Badge>
+                  {(() => {
+                    const status = getPaymentStatus(site);
+                    return (
+                      <Badge variant="outline" className={cn("font-medium", status.className)}>
+                        {status.label}
+                      </Badge>
+                    );
+                  })()}
                 </TableCell>
                 <TableCell>
                   <div className={cn("text-sm", isPaymentOverdue(site.nextPayment) && "text-destructive font-medium")}>
                     {formatDate(site.nextPayment)}
-                    {isPaymentOverdue(site.nextPayment) && <span className="block text-xs">Atrasado</span>}
                   </div>
                 </TableCell>
                 <TableCell className="text-right">
@@ -139,6 +168,9 @@ export function SitesTable({ sites, onToggleStatus, onEditSite, onDeleteSite }: 
                       <DropdownMenuContent align="end">
                         <DropdownMenuItem onClick={() => handleEditClick(site)}>
                           <Pencil className="mr-2 h-4 w-4" /> Editar Site
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleMarkAsPaid(site)}>
+                          <CreditCard className="mr-2 h-4 w-4 text-success" /> Marcar como Pago
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={() => onToggleStatus(site.id)}>
                           {site.active ? <><PowerOff className="mr-2 h-4 w-4 text-destructive" /> Desativar Site</> : <><Power className="mr-2 h-4 w-4 text-success" /> Ativar Site</>}
