@@ -9,6 +9,7 @@ import Sites from "./pages/Sites";
 import Clientes from "./pages/Clientes";
 import Pagamentos from "./pages/Pagamentos";
 import Configuracoes from "./pages/Configuracoes";
+import SiteBloqueado from "./pages/SiteBloqueado";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -19,16 +20,18 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <MainLayout>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/sites" element={<Sites />} />
-            <Route path="/clientes" element={<Clientes />} />
-            <Route path="/pagamentos" element={<Pagamentos />} />
-            <Route path="/configuracoes" element={<Configuracoes />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </MainLayout>
+        <Routes>
+          {/* Página pública de bloqueio - sem layout */}
+          <Route path="/bloqueado" element={<SiteBloqueado />} />
+          
+          {/* Rotas do painel admin */}
+          <Route element={<MainLayout><Index /></MainLayout>} path="/" />
+          <Route element={<MainLayout><Sites /></MainLayout>} path="/sites" />
+          <Route element={<MainLayout><Clientes /></MainLayout>} path="/clientes" />
+          <Route element={<MainLayout><Pagamentos /></MainLayout>} path="/pagamentos" />
+          <Route element={<MainLayout><Configuracoes /></MainLayout>} path="/configuracoes" />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
