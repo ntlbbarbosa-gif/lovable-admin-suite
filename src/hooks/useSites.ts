@@ -2,6 +2,21 @@ import { useState, useEffect } from 'react';
 import { SiteData } from '@/utils/promptGenerator';
 import sitesData from '@/data/sites.json';
 
+const STORAGE_KEY = 'sites_data';
+
+function loadFromStorage(): SiteData[] | null {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    return stored ? JSON.parse(stored) : null;
+  } catch {
+    return null;
+  }
+}
+
+function saveToStorage(sites: SiteData[]) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(sites));
+}
+
 export function useSites() {
   const [sites, setSites] = useState<SiteData[]>([]);
   const [loading, setLoading] = useState(true);
@@ -9,12 +24,19 @@ export function useSites() {
   useEffect(() => {
     const loadSites = () => {
       setTimeout(() => {
-        setSites(sitesData as SiteData[]);
+        const stored = loadFromStorage();
+        setSites(stored || (sitesData as SiteData[]));
         setLoading(false);
-      }, 500);
+      }, 300);
     };
     loadSites();
   }, []);
+
+  useEffect(() => {
+    if (!loading && sites.length >= 0) {
+      saveToStorage(sites);
+    }
+  }, [sites, loading]);
 
   const toggleSiteStatus = (id: string) => {
     setSites(prevSites =>
