@@ -26,6 +26,11 @@ export function useSites() {
     );
   };
 
+  const addSite = (newSite: Omit<SiteData, 'id'>) => {
+    const id = `S-${String(sites.length + 1).padStart(3, '0')}`;
+    setSites(prevSites => [...prevSites, { ...newSite, id }]);
+  };
+
   const getStats = () => {
     const activeSites = sites.filter(s => s.active).length;
     const inactiveSites = sites.filter(s => !s.active).length;
@@ -51,6 +56,7 @@ export function useSites() {
     sites,
     loading,
     toggleSiteStatus,
+    addSite,
     getStats,
   };
 }

@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { Plus, Search, Filter } from 'lucide-react';
+import { Search, Filter } from 'lucide-react';
 import { SitesTable } from '@/components/sites/SitesTable';
+import { AddSiteDialog } from '@/components/sites/AddSiteDialog';
 import { useSites } from '@/hooks/useSites';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
   Select,
@@ -14,7 +14,7 @@ import {
 import { Skeleton } from '@/components/ui/skeleton';
 
 export default function Sites() {
-  const { sites, loading, toggleSiteStatus } = useSites();
+  const { sites, loading, toggleSiteStatus, addSite } = useSites();
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
 
@@ -48,10 +48,7 @@ export default function Sites() {
           <h1 className="text-2xl font-bold tracking-tight text-foreground">Sites</h1>
           <p className="text-muted-foreground">Gerencie todos os sites alugados</p>
         </div>
-        <Button className="gap-2 w-fit">
-          <Plus className="h-4 w-4" />
-          Novo Site
-        </Button>
+        <AddSiteDialog onAddSite={addSite} />
       </div>
 
       {/* Filters */}

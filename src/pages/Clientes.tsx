@@ -1,18 +1,14 @@
-import { Users, UserPlus, Mail, Phone } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Users, Mail, Phone } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-
-const clients = [
-  { id: 1, name: 'João Silva', email: 'joao@techstore.com', phone: '(11) 99999-1234', sites: 2, status: 'Ativo' },
-  { id: 2, name: 'Maria Oliveira', email: 'maria@silvalaw.com', phone: '(21) 98888-5678', sites: 1, status: 'Ativo' },
-  { id: 3, name: 'Carlos Santos', email: 'carlos@odontoplus.com', phone: '(31) 97777-9012', sites: 1, status: 'Inativo' },
-  { id: 4, name: 'Ana Costa', email: 'ana@saborcaseiro.com', phone: '(41) 96666-3456', sites: 1, status: 'Ativo' },
-  { id: 5, name: 'Pedro Almeida', email: 'pedro@casanova.com', phone: '(51) 95555-7890', sites: 3, status: 'Ativo' },
-];
+import { useClients } from '@/hooks/useClients';
+import { AddClientDialog } from '@/components/clients/AddClientDialog';
 
 export default function Clientes() {
+  const { clients, addClient, getStats } = useClients();
+  const stats = getStats();
+
   return (
     <div className="space-y-6">
       {/* Page Header */}
@@ -21,10 +17,7 @@ export default function Clientes() {
           <h1 className="text-2xl font-bold tracking-tight text-foreground">Clientes</h1>
           <p className="text-muted-foreground">Gerencie os clientes do sistema</p>
         </div>
-        <Button className="gap-2 w-fit">
-          <UserPlus className="h-4 w-4" />
-          Novo Cliente
-        </Button>
+        <AddClientDialog onAddClient={addClient} />
       </div>
 
       {/* Stats */}
@@ -35,7 +28,7 @@ export default function Clientes() {
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{clients.length}</div>
+            <div className="text-2xl font-bold">{stats.total}</div>
           </CardContent>
         </Card>
         <Card>
@@ -44,7 +37,7 @@ export default function Clientes() {
             <Users className="h-4 w-4 text-success" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{clients.filter(c => c.status === 'Ativo').length}</div>
+            <div className="text-2xl font-bold">{stats.active}</div>
           </CardContent>
         </Card>
         <Card>
@@ -53,7 +46,7 @@ export default function Clientes() {
             <Users className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{(clients.reduce((acc, c) => acc + c.sites, 0) / clients.length).toFixed(1)}</div>
+            <div className="text-2xl font-bold">{stats.avgSites.toFixed(1)}</div>
           </CardContent>
         </Card>
       </div>
@@ -82,7 +75,7 @@ export default function Clientes() {
               </div>
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Phone className="h-4 w-4" />
-                {client.phone}
+                {client.phone || 'Não informado'}
               </div>
               <CardDescription className="pt-2">
                 {client.sites} {client.sites === 1 ? 'site' : 'sites'} vinculado{client.sites === 1 ? '' : 's'}
