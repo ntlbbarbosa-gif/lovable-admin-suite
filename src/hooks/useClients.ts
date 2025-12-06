@@ -21,17 +21,24 @@ export function useClients() {
     setClients(prev => [...prev, { ...newClient, id }]);
   };
 
+  const editClient = (id: number, updatedClient: Partial<Client>) => {
+    setClients(prev =>
+      prev.map(client =>
+        client.id === id ? { ...client, ...updatedClient } : client
+      )
+    );
+  };
+
+  const deleteClient = (id: number) => {
+    setClients(prev => prev.filter(client => client.id !== id));
+  };
+
   const getStats = () => {
     const total = clients.length;
     const active = clients.filter(c => c.status === 'Ativo').length;
     const avgSites = total > 0 ? clients.reduce((acc, c) => acc + c.sites, 0) / total : 0;
-    
     return { total, active, avgSites };
   };
 
-  return {
-    clients,
-    addClient,
-    getStats,
-  };
+  return { clients, addClient, editClient, deleteClient, getStats };
 }

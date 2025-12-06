@@ -7,14 +7,12 @@ export function useSites() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Simulating API call with JSON data
     const loadSites = () => {
       setTimeout(() => {
         setSites(sitesData as SiteData[]);
         setLoading(false);
       }, 500);
     };
-
     loadSites();
   }, []);
 
@@ -31,6 +29,18 @@ export function useSites() {
     setSites(prevSites => [...prevSites, { ...newSite, id }]);
   };
 
+  const editSite = (id: string, updatedSite: Partial<SiteData>) => {
+    setSites(prevSites =>
+      prevSites.map(site =>
+        site.id === id ? { ...site, ...updatedSite } : site
+      )
+    );
+  };
+
+  const deleteSite = (id: string) => {
+    setSites(prevSites => prevSites.filter(site => site.id !== id));
+  };
+
   const getStats = () => {
     const activeSites = sites.filter(s => s.active).length;
     const inactiveSites = sites.filter(s => !s.active).length;
@@ -41,22 +51,10 @@ export function useSites() {
       const weekFromNow = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
       return paymentDate >= now && paymentDate <= weekFromNow;
     }).length;
-    const estimatedRevenue = activeSites * 299; // R$ 299 per site
+    const estimatedRevenue = activeSites * 299;
 
-    return {
-      activeSites,
-      inactiveSites,
-      overduePayments,
-      upcomingPayments,
-      estimatedRevenue,
-    };
+    return { activeSites, inactiveSites, overduePayments, upcomingPayments, estimatedRevenue };
   };
 
-  return {
-    sites,
-    loading,
-    toggleSiteStatus,
-    addSite,
-    getStats,
-  };
+  return { sites, loading, toggleSiteStatus, addSite, editSite, deleteSite, getStats };
 }
