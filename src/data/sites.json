@@ -1,0 +1,90 @@
+[
+  {
+    "id": "S-001",
+    "company": "Loja TechStore",
+    "siteUrl": "https://techstore.lovable.app",
+    "active": true,
+    "nextPayment": "2025-01-20",
+    "segment": "E-commerce de Tecnologia",
+    "colors": "Azul e Branco",
+    "objective": "Venda de produtos eletrônicos",
+    "notes": "Cliente desde 2024"
+  },
+  {
+    "id": "S-002",
+    "company": "Escritório Jurídico Silva",
+    "siteUrl": "https://silvalaw.lovable.app",
+    "active": true,
+    "nextPayment": "2025-01-15",
+    "segment": "Advocacia",
+    "colors": "Dourado e Preto",
+    "objective": "Captação de clientes e apresentação institucional",
+    "notes": "Renovação automática"
+  },
+  {
+    "id": "S-003",
+    "company": "Clínica Odonto Plus",
+    "siteUrl": "https://odontoplus.lovable.app",
+    "active": false,
+    "nextPayment": "2024-12-01",
+    "segment": "Saúde - Odontologia",
+    "colors": "Verde Água e Branco",
+    "objective": "Agendamento online e divulgação",
+    "notes": "Pagamento atrasado"
+  },
+  {
+    "id": "S-004",
+    "company": "Restaurante Sabor Caseiro",
+    "siteUrl": "https://saborcaseiro.lovable.app",
+    "active": true,
+    "nextPayment": "2025-02-10",
+    "segment": "Gastronomia",
+    "colors": "Laranja e Marrom",
+    "objective": "Cardápio digital e pedidos online",
+    "notes": "Plano premium"
+  },
+  {
+    "id": "S-005",
+    "company": "Imobiliária Casa Nova",
+    "siteUrl": "https://casanova.lovable.app",
+    "active": true,
+    "nextPayment": "2025-01-25",
+    "segment": "Imobiliário",
+    "colors": "Azul Escuro e Dourado",
+    "objective": "Listagem de imóveis e contato",
+    "notes": "API integrada"
+  },
+  {
+    "id": "S-006",
+    "company": "Academia FitLife",
+    "siteUrl": "https://fitlife.lovable.app",
+    "active": false,
+    "nextPayment": "2024-11-20",
+    "segment": "Fitness",
+    "colors": "Preto e Verde Limão",
+    "objective": "Planos e agendamento de aulas",
+    "notes": "Contrato cancelado"
+  },
+  {
+    "id": "S-007",
+    "company": "Agência Criativa Design",
+    "siteUrl": "https://criativadesign.lovable.app",
+    "active": true,
+    "nextPayment": "2025-01-30",
+    "segment": "Design e Marketing",
+    "colors": "Rosa e Roxo",
+    "objective": "Portfólio e captação de projetos",
+    "notes": "Cliente VIP"
+  },
+  {
+    "id": "S-008",
+    "company": "Pet Shop Amigo Fiel",
+    "siteUrl": "https://amigofiel.lovable.app",
+    "active": true,
+    "nextPayment": "2025-02-05",
+    "segment": "Pet Shop",
+    "colors": "Amarelo e Azul",
+    "objective": "E-commerce e serviços pet",
+    "notes": "Novo cliente"
+  }
+]
