@@ -32,6 +32,7 @@ export function AddSiteDialog({ onAddSite }: AddSiteDialogProps) {
     colors: '',
     objective: '',
     notes: '',
+    price: 299,
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -60,6 +61,7 @@ export function AddSiteDialog({ onAddSite }: AddSiteDialogProps) {
       colors: '',
       objective: '',
       notes: '',
+      price: 299,
     });
     setOpen(false);
   };
@@ -107,6 +109,19 @@ export function AddSiteDialog({ onAddSite }: AddSiteDialogProps) {
               type="date"
               value={formData.nextPayment}
               onChange={(e) => setFormData({ ...formData, nextPayment: e.target.value })}
+            />
+          </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="price">Preço Mensal (R$) *</Label>
+            <Input
+              id="price"
+              type="number"
+              min="0"
+              step="0.01"
+              placeholder="299"
+              value={formData.price}
+              onChange={(e) => setFormData({ ...formData, price: Number(e.target.value) })}
             />
           </div>
           
